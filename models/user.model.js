@@ -1,8 +1,15 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-var UserSchema = new Schema({
-	display_name: { type: String, default: null },
-	id: {type: Number, default: null, min: 0},
-	image_url: { type: String, default: null}
-  });
+const userSchema = new Schema({
+	display_name: String,
+	image_url: String,
+	created_playlists: { type: Schema.Types.ObjectId, ref: 'Playlist' },
+	saved_playlists: { type: Schema.Types.ObjectId, ref: 'Playlist' }
+});
+
+const User = mongoose.model('User', userSchema);
+
+module.exports = {User, userSchema};
+
+

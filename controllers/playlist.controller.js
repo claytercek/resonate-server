@@ -1,5 +1,5 @@
 const Playlist = require('../models/playlist.model').Playlist;
-const UserCtr = require('./user.controller');
+const User = require('../models/user.model').User;
 
 /**
  * Create new playlist
@@ -26,8 +26,19 @@ function create(req, res, next) {
 	playlist.save()
 		.then(savedPlaylist => {
 			Playlist.populate(savedPlaylist, {path:"user"}, (err, populatedPlist) => {
-				res.json(populatedPlist)
-				
+				let creator = populatedPlist.user;
+				let newCreatedList = creator.created_playlists.push(savedPlaylist._id) 
+				populatedPlist.user.created_playlists = newCreatedList;
+				console.log(creator._id)
+
+				User.findOneAndUpdate({_id: creator._id}, { $push: {created_playlists: savedPlaylist._id}}, (err, doc) => {
+					if (err) {
+						console.log(err);
+					} else {
+						res.json(populatedPlist);
+					}
+					console.log(doc);
+				});
 			})
 		})
 		.catch(e => next(e));
@@ -62,20 +73,14 @@ function get(req, res) {
  * @property {string} req.body.user
  * @property {string} req.body.description
  * @property {[string]} req.body.tags
- * @property {obj} req.body.location
- * @property {obj} req.body.tracks
- * @property {obj} req.body.mood
+ * @property {object} req.body.location
+ * @property {object} req.body.tracks
+ * @property {object} req.body.mood
  * @returns {Playlist}
  */
 function update(req, res, next) {
 	const playlist = req.playlist;
-		playlist.title = req.body.title,
-		playlist.user = req.body.user,
-		playlist.description = req.body.description,
-		playlist.tags = req.body.tags,
-		playlist.location = req.body.location,
-		playlist.tracks = req.body.tracks,
-		playlist.mood = req.body.mood
+	Object.assign(playlist, req.body)
 
 	playlist.save()
 		.then(savedPlaylist => res.json(savedPlaylist))

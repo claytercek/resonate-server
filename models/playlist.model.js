@@ -43,7 +43,6 @@ playlistSchema.statics = {
 	 * @returns {Promise<User, APIError>}
 	 */
 	get(id) {
-		console.log("hello world")
 		return this.findById(id)
 			.populate('user')
 			.exec()

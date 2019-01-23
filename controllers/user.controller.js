@@ -55,13 +55,7 @@ function get(req, res) {
  */
 function update(req, res, next) {
 	const user = req.user;
-	user.display_name = req.body.display_name
-	user.image_url = req.body.image_url
-	user.spotify_id = req.body.spotify_id
-	user.created_playlists = req.body.created_playlists
-	user.saved_playlists = req.body.saved_playlists
-	user.starred_tracks = req.body.starred_tracks
-
+	Object.assign(user, req.body)
 	user.save()
 		.then(savedUser => res.json(savedUser))
 		.catch(e => next(e));

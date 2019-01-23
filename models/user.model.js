@@ -19,7 +19,6 @@ userSchema.statics = {
 	 * @returns {Promise<User, APIError>}
 	 */
 	get(id) {
-		console.log("hello world")
 		return this.findById(id)
 			.populate('created_playlists')
 			.populate('starred_playlists')

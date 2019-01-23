@@ -1,4 +1,4 @@
-const User = require('../models/user.model');
+const User = require('../models/user.model').User;
 
 
 /**
@@ -22,12 +22,25 @@ function create(req, res, next) {
 
 
 /**
+ * Load user and append to req.
+ */
+function load(req, res, next, id) {
+	User.get(id)
+		.then((user) => {
+			req.user = user; // eslint-disable-line no-param-reassign
+			return next();
+		})
+		.catch(e => next(e));
+}
+
+
+/**
  * Get user
  * @returns {User}
  */
 function get(req, res) {
 	return res.json(req.user);
-  }
+}
 
 
 /**
@@ -35,6 +48,9 @@ function get(req, res) {
  * @property {string} req.body.display_name
  * @property {string} req.body.image_url
  * @property {string} req.body.spotify_id
+ * @property {string} req.body.created_playlists
+ * @property {string} req.body.saved_playlists
+ * @property {string} req.body.starred_tracks
  * @returns {User}
  */
 function update(req, res, next) {
@@ -42,6 +58,9 @@ function update(req, res, next) {
 	user.display_name = req.body.display_name
 	user.image_url = req.body.image_url
 	user.spotify_id = req.body.spotify_id
+	user.created_playlists = req.body.created_playlists
+	user.saved_playlists = req.body.saved_playlists
+	user.starred_tracks = req.body.starred_tracks
 
 	user.save()
 		.then(savedUser => res.json(savedUser))
@@ -61,4 +80,18 @@ function remove(req, res, next) {
 }
 
 
-module.exports = { create, update, get, remove };
+/**
+ * Get user list.
+ * @property {number} req.query.skip - Number of users to be skipped.
+ * @property {number} req.query.limit - Limit number of users to be returned.
+ * @returns {User[]}
+ */
+function list(req, res, next) {
+	const { limit = 50, skip = 0 } = req.query;
+	User.list({ limit, skip })
+		.then(users => res.json(users))
+		.catch(e => next(e));
+}
+
+
+module.exports = { create, update, get, remove, load, list };

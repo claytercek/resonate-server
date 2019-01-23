@@ -15,6 +15,14 @@ const pointSchema = new mongoose.Schema({
 	}
 });
 
+const trackSchema = new mongoose.Schema({
+	title: String,
+	artists: [String],
+	album: String,
+	image_url: String,
+	spotify_id: String
+});
+
 
 const playlistSchema = new Schema({
 	title: String,
@@ -22,7 +30,7 @@ const playlistSchema = new Schema({
 	description: String,
 	tags: { type: [String], index: true },
 	location: { type: pointSchema, index: true },
-	tracks: [String],
+	tracks: [trackSchema],
 	mood: { type: pointSchema, index: true }
 	// TODO: Add image
 });

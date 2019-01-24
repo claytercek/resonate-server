@@ -27,11 +27,11 @@ function create(req, res, next) {
 		.then(savedPlaylist => {
 			Playlist.populate(savedPlaylist, {path:"user"}, (err, populatedPlist) => {
 				let creator = populatedPlist.user;
-				let newCreatedList = creator.created_playlists.push(savedPlaylist._id) 
+				let newCreatedList = creator.created_playlists.push(savedPlaylist.id) 
 				populatedPlist.user.created_playlists = newCreatedList;
 				console.log(creator._id)
 
-				User.findOneAndUpdate({_id: creator._id}, { $push: {created_playlists: savedPlaylist._id}}, (err, doc) => {
+				User.findOneAndUpdate({_id: creator.id}, { $push: {created_playlists: savedPlaylist.id}}, (err, doc) => {
 					if (err) {
 						console.log(err);
 					} else {

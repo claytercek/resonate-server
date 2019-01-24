@@ -5,8 +5,8 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
 	display_name: String,
 	image_url: String,
-	created_playlists: { type: [Schema.Types.ObjectId], ref: 'Playlist' },
-	saved_playlists: { type: [Schema.Types.ObjectId], ref: 'Playlist' },
+	created_playlists: [{ type: Schema.Types.ObjectId, ref: 'Playlist' }],
+	saved_playlists: [{ type: Schema.Types.ObjectId, ref: 'Playlist' }],
 	starred_tracks: [String],
 	spotify_id: String
 });

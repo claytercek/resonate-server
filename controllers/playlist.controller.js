@@ -95,7 +95,17 @@ function update(req, res, next) {
 function remove(req, res, next) {
 	const playlist = req.playlist;
 	playlist.remove()
-		.then(deletedPlaylist => res.json(deletedPlaylist))
+		.then(deletedPlaylist => {
+			User.findOneAndUpdate({_id: deletedPlaylist.user.id}, { $pull: {created_playlists: deletedPlaylist.id}}, (err, doc) => {
+				if (err) {
+					console.log(err);
+				} else {
+					res.json(deletedPlaylist);
+				}
+				console.log(doc);
+			});
+
+		})
 		.catch(e => next(e));
 }
 

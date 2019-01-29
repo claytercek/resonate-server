@@ -18,7 +18,7 @@ function create(req, res, next) {
 		user: req.body.user,
 		description: req.body.description,
 		tags: req.body.tags,
-		location: req.body.location,
+		location	: req.body.location,
 		tracks: req.body.tracks,
 		mood: req.body.mood
 	});
@@ -124,4 +124,27 @@ function list(req, res, next) {
 }
 
 
-module.exports = { create, update, get, remove, load, list };
+/**
+ * Get playlist list.
+ * @property {number} query.params.x
+ * @property {number} query.params.y
+ * @returns {Playlist[]}
+ */
+function locSearch(req, res, next) {
+	const { limit = 50, skip = 0 } = req.query;
+	Playlist.find({
+		location: {
+		  $near: {  
+			  $geometry: {
+				  type: "Point",
+				  coordinates: [req.query.latitude, req.query.longitude]
+				}
+			}
+		}
+	  })
+		.then(playlists => res.json(playlists))
+		.catch(e => next(e));
+}
+
+
+module.exports = { create, update, get, remove, load, list, locSearch };

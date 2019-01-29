@@ -7,7 +7,8 @@ const pointSchema = new mongoose.Schema({
 	type: {
 		type: String,
 		enum: ['Point'],
-		required: true
+		default: 'Point',
+		required: true,
 	},
 	coordinates: {
 		type: [Number],
@@ -28,10 +29,10 @@ const playlistSchema = new Schema({
 	title: String,
 	user: { type: Schema.Types.ObjectId, ref: 'User' },
 	description: String,
-	tags: { type: [String], index: true },
-	location: { type: pointSchema, index: true },
+	tags: { type: [String]},
+	location: { type: pointSchema },
 	tracks: [trackSchema],
-	mood: { type: pointSchema}
+	mood: { type: pointSchema }
 	// TODO: Add image
 });
 
@@ -71,6 +72,8 @@ playlistSchema.statics = {
 	}
 };
 
+
+playlistSchema.index({location : "2dsphere"})
 
 const Playlist = mongoose.model('Playlist', playlistSchema);
 

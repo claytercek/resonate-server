@@ -16,9 +16,11 @@ const APIError = require('./APIError');
 
 const app = express();
 
-if (config.env === 'development') {
-  app.use(logger('dev'));
-}
+// Log requests
+app.use(logger('dev'));
+
+// Serve static files in public directory
+app.use(express.static('public'))
 
 // parse body params and attache them to req.body
 app.use(bodyParser.json());
@@ -33,18 +35,6 @@ app.use(helmet());
 
 // enable CORS - Cross Origin Resource Sharing
 app.use(cors());
-
-// enable detailed API logging in dev env
-if (config.env === 'development') {
-  expressWinston.requestWhitelist.push('body');
-  expressWinston.responseWhitelist.push('body');
-  app.use(expressWinston.logger({
-    winstonInstance,
-    meta: true, // optional: log meta data about request (defaults to true)
-    msg: 'HTTP {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms',
-    colorStatus: true // Color the status code (default green, 3XX cyan, 4XX yellow, 5XX red).
-  }));
-}
 
 // mount all routes on /api path
 app.use('/api', routes);

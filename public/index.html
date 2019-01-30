@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,25 +8,120 @@
 	<title>resonate</title>
 	<link rel="stylesheet" href="main.css">
 </head>
+
 <body>
-	<table>
-		<thead>
-			<td>method</td>
-			<td>endpoint</td>
-			<td>usage</td>
-			<td>returns</td>
-		</thead>
-		<tr>
-			<td>POST</td>
-			<td>/api/playlists</td>
-			<td>Create new playlist</td>
-		</tr>
-		<tr>
-			<td>GET</td>
-			<td>/api/playlists</td>
-			<td>Get list of playlists</td>
-		</tr>
-	</table>
+	<div class="tables">
+		<div>
+			<h2>Basic Playlist Endpoints</h2>
+			<table>
+				<thead>
+					<tr>
+						<th>method</th>
+						<th>endpoint</th>
+						<th>usage</th>
+						<th>returns</th>
+					</tr>
+				</thead>
+				<tr>
+					<td>POST</td>
+					<td>/api/playlists</td>
+					<td>Create new playlist</td>
+					<td>Playlist</td>
+				</tr>
+				<tr>
+					<td>GET</td>
+					<td>/api/playlists</td>
+					<td>Get list of playlists</td>
+					<td>Playlist[]</td>
+				</tr>
+				<tr>
+					<td>GET</td>
+					<td>/api/playlists/{playlistId}</td>
+					<td>Get playlist by id</td>
+					<td>Playlist</td>
+				</tr>
+				<tr>
+					<td>PUT</td>
+					<td>/api/playlists/{playlistId}</td>
+					<td>Update playlist by id</td>
+					<td>Playlist</td>
+				</tr>
+				<tr>
+					<td>DELETE</td>
+					<td>/api/playlists/{playlistId}</td>
+					<td>Delete playlist by id</td>
+					<td>Playlist</td>
+				</tr>
+			</table>
+		</div>
+		<div>
+			<h2>Basic User Endpoints</h2>
+			<table>
+				<thead>
+					<tr>
+						<th>method</th>
+						<th>endpoint</th>
+						<th>usage</th>
+						<th>returns</th>
+					</tr>
+				</thead>
+				<tr>
+					<td>POST</td>
+					<td>/api/users</td>
+					<td>Create new playlist</td>
+					<td>User</td>
+				</tr>
+				<tr>
+					<td>GET</td>
+					<td>/api/users</td>
+					<td>Get list of users</td>
+					<td>User[]</td>
+				</tr>
+				<tr>
+					<td>GET</td>
+					<td>/api/users/{userId}</td>
+					<td>Get user by id</td>
+					<td>User</td>
+				</tr>
+				<tr>
+					<td>PUT</td>
+					<td>/api/users/{userId}</td>
+					<td>Update user by id</td>
+					<td>User</td>
+				</tr>
+				<tr>
+					<td>DELETE</td>
+					<td>/api/users/{userId}</td>
+					<td>Delete user by id</td>
+					<td>User</td>
+				</tr>
+			</table>
+		</div>
+		<div>
+			<h2>Search Endpoints</h2>
+			<table>
+				<thead>
+					<tr>
+						<th>method</th>
+						<th>endpoint</th>
+						<th>usage</th>
+						<th>returns</th>
+					</tr>
+				</thead>
+				<tr>
+					<td>GET</td>
+					<td>/api/search/location</td>
+					<td>Get playlists by location</td>
+					<td>Playlist[]</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="result">
+		<pre id="JSON"></pre>
+	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="app.js"></script>
 </body>
+
 </html>

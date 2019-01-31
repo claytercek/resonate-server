@@ -225,11 +225,13 @@ function submitAjax() {
     $.ajax({
         url: url,
         type: obj.method,
+        data: data,
         success: function (result) {
             console.log(result)
             codeElement.html(syntaxHighlight(result))
         }
     }).catch(function(err) {
-        codeElement.html(err)
+        console.log(err)
+        codeElement.html(syntaxHighlight(err.responseText))
     })
 }

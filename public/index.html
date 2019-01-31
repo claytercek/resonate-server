@@ -22,31 +22,31 @@
 						<th>returns</th>
 					</tr>
 				</thead>
-				<tr>
+				<tr onclick="setActive('createPlaylist')">
 					<td>POST</td>
 					<td>/api/playlists</td>
 					<td>Create new playlist</td>
 					<td>Playlist</td>
 				</tr>
-				<tr>
+				<tr onclick="setActive('getPlaylists')">
 					<td>GET</td>
 					<td>/api/playlists</td>
 					<td>Get list of playlists</td>
 					<td>[Playlist]</td>
 				</tr>
-				<tr>
+				<tr onclick="setActive('getPlaylist')">
 					<td>GET</td>
 					<td>/api/playlists/{playlistId}</td>
 					<td>Get playlist by id</td>
 					<td>Playlist</td>
 				</tr>
-				<tr>
+				<tr onclick="setActive('updatePlaylist')">
 					<td>PUT</td>
 					<td>/api/playlists/{playlistId}</td>
 					<td>Update playlist by id</td>
 					<td>Playlist</td>
 				</tr>
-				<tr>
+				<tr onclick="setActive('deletePlaylist')">
 					<td>DELETE</td>
 					<td>/api/playlists/{playlistId}</td>
 					<td>Delete playlist by id</td>
@@ -65,31 +65,31 @@
 						<th>returns</th>
 					</tr>
 				</thead>
-				<tr>
+				<tr onclick="setActive('createUser')">
 					<td>POST</td>
 					<td>/api/users</td>
-					<td>Create new playlist</td>
+					<td>Create new user</td>
 					<td>User</td>
 				</tr>
-				<tr>
+				<tr onclick="setActive('getUsers')">
 					<td>GET</td>
 					<td>/api/users</td>
 					<td>Get list of users</td>
 					<td>[User]</td>
 				</tr>
-				<tr>
+				<tr onclick="setActive('getUser')">
 					<td>GET</td>
 					<td>/api/users/{userId}</td>
 					<td>Get user by id</td>
 					<td>User</td>
 				</tr>
-				<tr>
+				<tr onclick="setActive('updateUser')">
 					<td>PUT</td>
 					<td>/api/users/{userId}</td>
 					<td>Update user by id</td>
 					<td>User</td>
 				</tr>
-				<tr>
+				<tr onclick="setActive('deleteUser')">
 					<td>DELETE</td>
 					<td>/api/users/{userId}</td>
 					<td>Delete user by id</td>
@@ -108,7 +108,7 @@
 						<th>returns</th>
 					</tr>
 				</thead>
-				<tr>
+				<tr onclick="setActive('searchLocation')">
 					<td>GET</td>
 					<td>/api/search/location</td>
 					<td>Get playlists by location</td>
@@ -118,6 +118,14 @@
 		</div>
 	</div>
 	<div class="result">
+		<div class="settings">
+			<h4>example url</h4>
+			<form>
+				<label for="x">x</label>
+				<input type="text" id="x">
+			</form>
+			<button onclick="submitAjax()">send request</button>
+		</div>
 		<pre id="JSON"></pre>
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

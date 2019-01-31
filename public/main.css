@@ -29,7 +29,8 @@ table {
 
 th {
 	text-transform: uppercase;
-	font-weight: 300;
+	font-weight: 400;
+	font-size: 80%;
 	opacity: 0.6;
 	border-bottom: 2px solid rgba(255,255,255,0.4);
 	text-align: left;
@@ -48,13 +49,23 @@ td:first-child {
 }
 
 td:nth-child(2) {
-	color: #FF4477;
+	color: rgb(255, 122, 255);
 	font-weight: 400;
 	width: 13rem;
 }
 
 td:nth-child(4) {
 	width: 6rem;
+}
+
+tbody tr:hover {
+	cursor: pointer;
+	background-color: #2a2a2a;
+}
+
+tbody tr:active {
+	cursor: pointer;
+	background-color: #5a5a5a;
 }
 
 body {
@@ -65,12 +76,23 @@ body {
 div.result {
 	height: 100%;
 	flex-grow: 1;
-	overflow-y: scroll;
+}
+
+div.settings {
+	margin: 0;
+	padding: 2rem;
+	background-color: #1a1a1a;
+	box-shadow: 0px 10px 20px rgba(0,0,0,.8);
+	position: relative;
+	z-index: 5;
 }
 
 pre {
+	margin: 0;
+	height: 100%;
+	overflow-y: scroll;
 	width: 100%;
-	min-height: 100%;
+	padding: 2rem;
 }
 
 div.tables {
@@ -91,4 +113,49 @@ pre .string {
 
 pre .number {
 	color: rgb(255, 122, 255)
+}
+
+button {
+	background-color: transparent; /* Green */
+	border: 2px solid rgb(255, 122, 255);
+	color: rgb(255, 122, 255);
+	padding: 14px 24px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	cursor: pointer;
+  }
+
+  button:hover {
+	  background-color: rgba(255, 122, 255, 0.1);
+  }
+
+  button:active {
+	  background-color: rgba(255, 122, 255, 0.3);
+  }
+
+  .settings h4{
+	  background-color: black;
+	  padding: 14px 24px;
+	  border-radius: 8px;
+  }
+
+  .settings input {
+	background-color: rgba(0,0,0,.6);
+	color: white;
+	font-size: .9rem;
+	padding: 10px 24px;
+	border-radius: 8px;
+	border: 1px solid white;
+	margin-bottom: 1rem;
+	display: block;
+	width: 100%;
+}
+.settings label {
+	margin-right: .9rem;
+}
+
+.settings h3 {
+	color: rgb(92, 244, 255)
 }

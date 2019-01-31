@@ -80,3 +80,15 @@ div.tables {
 	background-color: #000;
 	padding: 2rem;
 }
+
+pre .key {
+	color: rgb(255, 228, 109)
+}
+
+pre .string {
+	color: rgb(92, 244, 255)
+}
+
+pre .number {
+	color: rgb(255, 122, 255)
+}

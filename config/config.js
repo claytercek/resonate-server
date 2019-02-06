@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const randomstring = require('randomstring');
 
 // require and configure dotenv, will load vars in .env in PROCESS.ENV
 require('dotenv').config();
@@ -18,6 +19,14 @@ const envVarsSchema = Joi.object({
 		}),
 	MONGO_URI: Joi.string().required()
 		.description('Mongo DB host uri'),
+	CLIENT_ID: Joi.string().required()
+		.description('Spotify client id'),
+	CLIENT_SECRET: Joi.string().required()
+		.description('Spotify client secret'),
+	CALLBACK_URI: Joi.string().required()
+		.description('Spotify callback uri'),
+	ENCRYPTION_SECRET: Joi.string()
+		.default(randomstring.generate(30))
 }).unknown()
 	.required();
 
@@ -30,7 +39,11 @@ const config = {
 	env: envVars.NODE_ENV,
 	port: envVars.PORT,
 	mongooseDebug: envVars.MONGOOSE_DEBUG,
-	mongo_uri: envVars.MONGO_URI
+	mongo_uri: envVars.MONGO_URI,
+	client_id: envVars.CLIENT_ID,
+	client_secret: envVars.CLIENT_SECRET,
+	callback_uri: envVars.CALLBACK_URI,
+	encryption_secret: envVars.ENCRYPTION_SECRET
 };
 
 module.exports = config;

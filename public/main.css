@@ -71,12 +71,14 @@ tbody tr:active {
 body {
 	display: flex;
 	position: fixed;
+	border: 1px solid white;
 }
 
 div.result {
 	height: 100%;
 	flex-grow: 1;
 	overflow: hidden;
+	border-left: 1px solid white;
 }
 
 div.settings {
@@ -86,6 +88,7 @@ div.settings {
 	box-shadow: 0px 10px 20px rgba(0,0,0,.8);
 	position: relative;
 	z-index: 5;
+	border-bottom: 1px solid white;
 }
 
 pre {

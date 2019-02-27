@@ -21,7 +21,8 @@ const trackSchema = new mongoose.Schema({
 	artists: [String],
 	album: String,
 	image_url: String,
-	spotify_id: String
+	spotify_id: String,
+	duration: Number
 });
 
 
@@ -32,7 +33,8 @@ const playlistSchema = new Schema({
 	tags: { type: [String]},
 	location: { type: pointSchema },
 	tracks: [trackSchema],
-	mood: { type: pointSchema }
+	mood: { type: pointSchema },
+	location_name: {type: String}
 	// TODO: Add image
 });
 

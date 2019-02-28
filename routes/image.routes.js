@@ -18,8 +18,6 @@ const upload = multer({ storage: Storage })
 
 
 router.post('/upload', upload.single('photo'), (req, res) => {
-	console.log('file', req.files)
-  console.log('body', req.body)
 	if (!req.file) {
     console.log("No file received");
     res.status(500).json({
@@ -28,8 +26,10 @@ router.post('/upload', upload.single('photo'), (req, res) => {
 
   } else {
     console.log('file received');
-    res.status(406).json({
+    console.log(req.file)
+    res.status(200).json({
 			message: 'success!',
+			image_url: "image/" + req.file.filename
 		})
   }
   

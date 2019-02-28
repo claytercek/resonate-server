@@ -13,6 +13,8 @@ const User = require('../models/user.model').User;
  * @returns {Playlist}
  */
 function create(req, res, next) {
+	console.log("---create playlist---")
+	console.dir(req)
 	const playlist = new Playlist({
 		title: req.body.title,
 		user: req.body.user,
@@ -20,7 +22,9 @@ function create(req, res, next) {
 		tags: req.body.tags,
 		location	: req.body.location,
 		tracks: req.body.tracks,
-		mood: req.body.mood
+		mood: req.body.mood,
+		color: req.body.color,
+		image_path: req.body.image_path
 	});
 
 	playlist.save()

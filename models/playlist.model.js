@@ -34,8 +34,9 @@ const playlistSchema = new Schema({
 	location: { type: pointSchema },
 	tracks: [trackSchema],
 	mood: { type: pointSchema },
-	location_name: {type: String}
-	// TODO: Add image
+	color: {type: String},
+	location_name: {type: String},
+	image_path: {type: String}
 });
 
 

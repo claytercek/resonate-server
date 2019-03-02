@@ -14,7 +14,6 @@ const User = require('../models/user.model').User;
  */
 function create(req, res, next) {
 	console.log("---create playlist---")
-	console.dir(req)
 	const playlist = new Playlist({
 		title: req.body.title,
 		user: req.body.user,
@@ -24,7 +23,8 @@ function create(req, res, next) {
 		tracks: req.body.tracks,
 		mood: req.body.mood,
 		color: req.body.color,
-		image_path: req.body.image_path
+		image_path: req.body.image_path,
+		location_name: req.body.location_name
 	});
 
 	playlist.save()
@@ -129,26 +129,54 @@ function list(req, res, next) {
 
 
 /**
- * Get playlist list.
+ * Search playlists by location and filter by mood
  * @property {number} query.params.x
- * @property {number} query.params.y
+ * @property {number} query.params.x
+ * @property {number} query.params.mood
  * @returns {Playlist[]}
  */
 function locSearch(req, res, next) {
-	const { limit = 50, skip = 0 } = req.query;
+	const { moodX = 0, moodY = 0, maxDistance = 50000, tags="%5B%5D" } = req.query;
+	const parsedTags = JSON.parse(tags);
+	if (moodX == 0 && moodY == 0 ) {
+		Playlist.find({
+				location: {
+					$near: {  
+						$geometry: {
+							type: "Point",
+							coordinates: [req.query.latitude, req.query.longitude]
+						},
+						$maxDistance: maxDistance
+					}
+				}
+				}).then( playlistsLocation => {
+					res.json(playlistsLocation)
+				}).catch(e => next(e));
+	} else {
+
+	}
 	Playlist.find({
 		location: {
-		  $near: {  
-			  $geometry: {
-				  type: "Point",
-				  coordinates: [req.query.latitude, req.query.longitude]
+			$near: {  
+				$geometry: {
+					type: "Point",
+					coordinates: [req.query.latitude, req.query.longitude]
 				}
 			}
 		}
 	  })
-		.then(playlists => res.json(playlists))
+		.then(playlistsLocation => {
+				let filtered = playlistsLocation.filter(playlist => {
+					distanceX = playlist.mood.coordinates[0] - moodX;
+					distanceY = playlist.mood.coordinates[1] - moodY;
+					var hasTags = checker(playlist.tags, parsedTags);
+					return ((Math.sqrt( distanceX*distanceX + distanceY*distanceY ) <= 15) && hasTags);
+				})
+				res.json(filtered)
+		})
 		.catch(e => next(e));
 }
 
+let checker = (arr, target) => target.every(v => arr.includes(v));
 
 module.exports = { create, update, get, remove, load, list, locSearch };

@@ -14,7 +14,7 @@ const pointSchema = new mongoose.Schema({
 		type: [Number],
 		required: true
 	}
-});
+},{ _id : false });
 
 const trackSchema = new mongoose.Schema({
 	title: String,
@@ -23,7 +23,7 @@ const trackSchema = new mongoose.Schema({
 	image_url: String,
 	spotify_id: String,
 	duration: Number
-});
+},{ _id : false });
 
 
 const playlistSchema = new Schema({
@@ -77,6 +77,7 @@ playlistSchema.statics = {
 
 
 playlistSchema.index({location : "2dsphere"})
+playlistSchema.index({mood : "2dsphere"})
 
 const Playlist = mongoose.model('Playlist', playlistSchema);
 

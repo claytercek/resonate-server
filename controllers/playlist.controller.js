@@ -136,7 +136,7 @@ function list(req, res, next) {
  * @returns {Playlist[]}
  */
 function locSearch(req, res, next) {
-	const { moodX = 0, moodY = 0, maxDistance = 50000, tags="%5B%5D" } = req.query;
+	const { moodX = 0, moodY = 0, maxDistance = 50000, tags="[]" } = req.query;
 	const parsedTags = JSON.parse(tags);
 	if (moodX == 0 && moodY == 0 ) {
 		Playlist.find({

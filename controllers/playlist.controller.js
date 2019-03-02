@@ -24,7 +24,8 @@ function create(req, res, next) {
 		mood: req.body.mood,
 		color: req.body.color,
 		image_path: req.body.image_path,
-		location_name: req.body.location_name
+		location_name: req.body.location_name,
+		hearts: [],
 	});
 
 	playlist
@@ -166,7 +167,7 @@ function locSearch(req, res, next) {
 					distanceX = playlist.mood.coordinates[0] - moodX;
 					distanceY = playlist.mood.coordinates[1] - moodY;
 					var hasTags = checker(playlist.tags, parsedTags);
-					return Math.sqrt(distanceX * distanceX + distanceY * distanceY) <= 15 && hasTags;
+					return Math.sqrt(distanceX * distanceX + distanceY * distanceY) <= 20 && hasTags;
 				});
 				res.json(filtered);
 			})

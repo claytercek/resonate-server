@@ -144,7 +144,7 @@ function locSearch(req, res, next) {
 					$near: {  
 						$geometry: {
 							type: "Point",
-							coordinates: [req.query.latitude, req.query.longitude]
+							coordinates: [req.query.longitude, req.query.latitude]
 						},
 						$maxDistance: maxDistance
 					}

@@ -1,5 +1,5 @@
-const Playlist = require('../models/playlist.model').Playlist;
-const User = require('../models/user.model').User;
+const Playlist = require("../models/playlist.model").Playlist;
+const User = require("../models/user.model").User;
 
 /**
  * Create new playlist
@@ -13,13 +13,13 @@ const User = require('../models/user.model').User;
  * @returns {Playlist}
  */
 function create(req, res, next) {
-	console.log("---create playlist---")
+	console.log("---create playlist---");
 	const playlist = new Playlist({
 		title: req.body.title,
 		user: req.body.user,
 		description: req.body.description,
 		tags: req.body.tags,
-		location	: req.body.location,
+		location: req.body.location,
 		tracks: req.body.tracks,
 		mood: req.body.mood,
 		color: req.body.color,
@@ -27,15 +27,16 @@ function create(req, res, next) {
 		location_name: req.body.location_name
 	});
 
-	playlist.save()
+	playlist
+		.save()
 		.then(savedPlaylist => {
-			Playlist.populate(savedPlaylist, {path:"user"}, (err, populatedPlist) => {
+			Playlist.populate(savedPlaylist, { path: "user" }, (err, populatedPlist) => {
 				let creator = populatedPlist.user;
-				let newCreatedList = creator.created_playlists.push(savedPlaylist.id) 
+				let newCreatedList = creator.created_playlists.push(savedPlaylist.id);
 				populatedPlist.user.created_playlists = newCreatedList;
-				console.log(creator._id)
+				console.log(creator._id);
 
-				User.findOneAndUpdate({_id: creator.id}, { $push: {created_playlists: savedPlaylist.id}}, (err, doc) => {
+				User.findOneAndUpdate({ _id: creator.id }, { $push: { created_playlists: savedPlaylist.id } }, (err, doc) => {
 					if (err) {
 						console.log(err);
 					} else {
@@ -43,24 +44,22 @@ function create(req, res, next) {
 					}
 					console.log(doc);
 				});
-			})
+			});
 		})
 		.catch(e => next(e));
 }
-
 
 /**
  * Load playlist and append to req.
  */
 function load(req, res, next, id) {
 	Playlist.get(id)
-		.then((playlist) => {
+		.then(playlist => {
 			req.playlist = playlist; // eslint-disable-line no-param-reassign
 			return next();
 		})
 		.catch(e => next(e));
 }
-
 
 /**
  * Get playlist
@@ -69,7 +68,6 @@ function load(req, res, next, id) {
 function get(req, res) {
 	return res.json(req.playlist);
 }
-
 
 /**
  * Update existing playlist info
@@ -84,13 +82,13 @@ function get(req, res) {
  */
 function update(req, res, next) {
 	const playlist = req.playlist;
-	Object.assign(playlist, req.body)
+	Object.assign(playlist, req.body);
 
-	playlist.save()
+	playlist
+		.save()
 		.then(savedPlaylist => res.json(savedPlaylist))
 		.catch(e => next(e));
 }
-
 
 /**
  * Delete playlist.
@@ -98,9 +96,10 @@ function update(req, res, next) {
  */
 function remove(req, res, next) {
 	const playlist = req.playlist;
-	playlist.remove()
+	playlist
+		.remove()
 		.then(deletedPlaylist => {
-			User.findOneAndUpdate({_id: deletedPlaylist.user.id}, { $pull: {created_playlists: deletedPlaylist.id}}, (err, doc) => {
+			User.findOneAndUpdate({ _id: deletedPlaylist.user.id }, { $pull: { created_playlists: deletedPlaylist.id } }, (err, doc) => {
 				if (err) {
 					console.log(err);
 				} else {
@@ -108,11 +107,9 @@ function remove(req, res, next) {
 				}
 				console.log(doc);
 			});
-
 		})
 		.catch(e => next(e));
 }
-
 
 /**
  * Get playlist list.
@@ -127,7 +124,6 @@ function list(req, res, next) {
 		.catch(e => next(e));
 }
 
-
 /**
  * Search playlists by location and filter by mood
  * @property {number} query.params.x
@@ -136,45 +132,46 @@ function list(req, res, next) {
  * @returns {Playlist[]}
  */
 function locSearch(req, res, next) {
-	const { moodX = 0, moodY = 0, maxDistance = 50000, tags="[]" } = req.query;
+	const { longitude, latitude, moodX = 0, moodY = 0, maxDistance = 50000, tags = "[]" } = req.query;
 	const parsedTags = JSON.parse(tags);
-	if (moodX == 0 && moodY == 0 ) {
+	if (moodX == 0 && moodY == 0) {
 		Playlist.find({
-				location: {
-					$near: {  
-						$geometry: {
-							type: "Point",
-							coordinates: [req.query.longitude, req.query.latitude]
-						},
-						$maxDistance: maxDistance
-					}
-				}
-				}).then( playlistsLocation => {
-					res.json(playlistsLocation)
-				}).catch(e => next(e));
-	} else {
-
-	}
-	Playlist.find({
-		location: {
-			$near: {  
-				$geometry: {
-					type: "Point",
-					coordinates: [req.query.latitude, req.query.longitude]
+			location: {
+				$near: {
+					$geometry: {
+						type: "Point",
+						coordinates: [longitude, latitude]
+					},
+					$maxDistance: maxDistance
 				}
 			}
-		}
-	  })
-		.then(playlistsLocation => {
+		})
+			.then(playlistsLocation => {
+				res.json(playlistsLocation);
+			})
+			.catch(e => next(e));
+	} else {
+		Playlist.find({
+			location: {
+				$near: {
+					$geometry: {
+						type: "Point",
+						coordinates: [longitude, latitude]
+					}
+				}
+			}
+		})
+			.then(playlistsLocation => {
 				let filtered = playlistsLocation.filter(playlist => {
 					distanceX = playlist.mood.coordinates[0] - moodX;
 					distanceY = playlist.mood.coordinates[1] - moodY;
 					var hasTags = checker(playlist.tags, parsedTags);
-					return ((Math.sqrt( distanceX*distanceX + distanceY*distanceY ) <= 15) && hasTags);
-				})
-				res.json(filtered)
-		})
-		.catch(e => next(e));
+					return Math.sqrt(distanceX * distanceX + distanceY * distanceY) <= 15 && hasTags;
+				});
+				res.json(filtered);
+			})
+			.catch(e => next(e));
+	}
 }
 
 let checker = (arr, target) => target.every(v => arr.includes(v));

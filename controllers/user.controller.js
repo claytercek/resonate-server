@@ -44,6 +44,27 @@ function get(req, res) {
 
 
 /**
+ * Load user and append to req.
+ */
+function loadSpotify(req, res, next, id) {
+	User.getSpotify(id)
+		.then((user) => {
+			req.user = user; // eslint-disable-line no-param-reassign
+			return next();
+		})
+		.catch(e => next(e));
+}
+
+/**
+ * Get user
+ * @returns {User}
+ */
+function getSpotify(req, res) {
+	return res.json(req.user);
+}
+
+
+/**
  * Update existing user info
  * @property {string} req.body.display_name
  * @property {string} req.body.image_url
@@ -88,4 +109,4 @@ function list(req, res, next) {
 }
 
 
-module.exports = { create, update, get, remove, load, list };
+module.exports = { create, update, get, remove, load, list, getSpotify, loadSpotify };

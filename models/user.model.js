@@ -31,6 +31,24 @@ userSchema.statics = {
 				return Promise.reject(err);
 			});
 	},
+	/**
+	 * Get user
+	 * @param {ObjectId} id - The objectId of user.
+	 * @returns {Promise<User, APIError>}
+	 */
+	getSpotify(id) {
+		return this.findOne({spotify_id: id})
+			.populate('created_playlists')
+			.populate('starred_playlists')
+			.exec()
+			.then((user) => {
+				if (user) {
+					return user;
+				}
+				const err = new APIError('No such user exists!', httpStatus.NOT_FOUND);
+				return Promise.reject(err);
+			});
+	},
 
   /**
    * List users in descending order of 'createdAt' timestamp.

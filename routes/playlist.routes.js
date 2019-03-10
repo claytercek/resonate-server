@@ -1,16 +1,20 @@
-const express = require('express');
-const playlistCtr = require('../controllers/playlist.controller');
+const express = require("express");
+const playlistCtr = require("../controllers/playlist.controller");
+const userCtrl = require('../controllers/user.controller');
 
 const router = express.Router();
 
-router.route('/')
+router
+	.route("/")
 	/** POST /api/playlists - Create new playlist */
 	.post(playlistCtr.create)
 
 	/** GET /api/playlists - Get list of playlists */
-	.get(playlistCtr.list)
+	.get(playlistCtr.list);
 
-router.route('/:playlistId')
+
+router
+	.route("/:playlistId")
 	/** GET /api/playlists/:playlistId - Get playlist */
 	.get(playlistCtr.get)
 
@@ -20,7 +24,17 @@ router.route('/:playlistId')
 	/** DELETE /api/playlists/:playlistId - Delete playlist */
 	.delete(playlistCtr.remove);
 
+
+router
+	.route("/heart/:playlistId/:userId")
+	/** GET /api/playlists/heart/:userId/:playlistId - Toggle user hearting a specific playlist */
+	.get(playlistCtr.heart);
+
+
 /** Load playlist when API with playlistId route parameter is hit */
-router.param('playlistId', playlistCtr.load);
+router.param("playlistId", playlistCtr.load);
+
+/** Load user when API with userId route parameter is hit */
+router.param('userId', userCtrl.load);
 
 module.exports = router;

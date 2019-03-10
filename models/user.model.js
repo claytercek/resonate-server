@@ -21,7 +21,7 @@ userSchema.statics = {
 	get(id) {
 		return this.findById(id)
 			.populate('created_playlists')
-			.populate('starred_playlists')
+			.populate('saved_playlists')
 			.exec()
 			.then((user) => {
 				if (user) {
@@ -39,7 +39,7 @@ userSchema.statics = {
 	getSpotify(id) {
 		return this.findOne({spotify_id: id})
 			.populate('created_playlists')
-			.populate('starred_playlists')
+			.populate('saved_playlists')
 			.exec()
 			.then((user) => {
 				if (user) {
@@ -62,7 +62,7 @@ userSchema.statics = {
 			.skip(+skip)
 			.limit(+limit)
 			.populate('created_playlists')
-			.populate('starred_playlists')
+			.populate('saved_playlists')
 			.exec();
 	}
 };

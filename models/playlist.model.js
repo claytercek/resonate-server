@@ -37,7 +37,7 @@ const playlistSchema = new Schema({
 	color: {type: String},
 	location_name: {type: String},
 	image_path: {type: String},
-	hearts: { type: [String]}
+	hearts: { type: Number, default: 0}
 });
 
 

@@ -26,7 +26,6 @@ router.route('/spotify/:spotifyID')
 	.get(userCtrl.getSpotify)
 
 
-
 /** Load user when API with spotifyID route parameter is hit */
 router.param('spotifyID', userCtrl.loadSpotify);
 

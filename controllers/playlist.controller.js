@@ -25,7 +25,7 @@ function create(req, res, next) {
 		color: req.body.color,
 		image_path: req.body.image_path,
 		location_name: req.body.location_name,
-		hearts: [],
+		hearts: []
 	});
 
 	playlist
@@ -175,6 +175,41 @@ function locSearch(req, res, next) {
 	}
 }
 
+function heart(req, res, next) {
+	const playlist = req.playlist;
+	const user = req.user;
+	var add = false;
+
+	let index = user.saved_playlists.findIndex(x => x.id == playlist.id);
+
+	console.log(index);
+
+	add = index > -1;
+	playlist.hearts += add ? -1 : 1;
+
+	playlist
+		.save()
+		.then(savedPlaylist => {
+			if (add) {
+				User.findOneAndUpdate({ _id: user.id }, { $pull: { saved_playlists: savedPlaylist.id } }, (err, doc) => {
+					if (err) {
+					} else {
+						res.json(savedPlaylist);
+					}
+				});
+			} else {
+				User.findOneAndUpdate({ _id: user.id }, { $push: { saved_playlists: savedPlaylist.id } }, (err, doc) => {
+					if (err) {
+					} else {
+						res.json(savedPlaylist);
+					}
+				});
+			}
+		})
+		.catch(e => next(e));
+
+}
+
 let checker = (arr, target) => target.every(v => arr.includes(v));
 
-module.exports = { create, update, get, remove, load, list, locSearch };
+module.exports = { create, update, get, remove, load, list, locSearch, heart };

@@ -194,20 +194,25 @@ function heart(req, res, next) {
 				User.findOneAndUpdate({ _id: user.id }, { $pull: { saved_playlists: savedPlaylist.id } }, (err, doc) => {
 					if (err) {
 					} else {
-						res.json(savedPlaylist);
+						// Populate playlists
+						User.get(doc.id).then(user => {
+							res.json(user);
+						});
 					}
 				});
 			} else {
 				User.findOneAndUpdate({ _id: user.id }, { $push: { saved_playlists: savedPlaylist.id } }, (err, doc) => {
 					if (err) {
 					} else {
-						res.json(savedPlaylist);
+						// Populate playlists
+						User.get(doc.id).then(user => {
+							res.json(user);
+						});
 					}
 				});
 			}
 		})
 		.catch(e => next(e));
-
 }
 
 let checker = (arr, target) => target.every(v => arr.includes(v));

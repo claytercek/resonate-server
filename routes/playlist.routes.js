@@ -27,7 +27,7 @@ router
 
 router
 	.route("/heart/:playlistId/:userId")
-	/** GET /api/playlists/heart/:userId/:playlistId - Toggle user hearting a specific playlist */
+	/** GET /api/playlists/heart/:userId/:playlistId - Toggle user hearting playlist */
 	.get(playlistCtr.heart);
 
 

@@ -25,7 +25,7 @@ function create(req, res, next) {
 		color: req.body.color,
 		image_path: req.body.image_path,
 		location_name: req.body.location_name,
-		hearts: []
+		hearts: 0
 	});
 
 	playlist

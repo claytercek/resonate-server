@@ -158,7 +158,8 @@ function locSearch(req, res, next) {
 					$geometry: {
 						type: "Point",
 						coordinates: [longitude, latitude]
-					}
+					},
+					$maxDistance: maxDistance
 				}
 			}
 		})

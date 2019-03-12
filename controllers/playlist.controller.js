@@ -133,8 +133,7 @@ function list(req, res, next) {
  * @returns {Playlist[]}
  */
 function locSearch(req, res, next) {
-	const { longitude, latitude, moodX = 0, moodY = 0, maxDistance = 50000, tags = "[]" } = req.query;
-	const parsedTags = JSON.parse(tags);
+	const { longitude, latitude, moodX = 0, moodY = 0, maxDistance = 50000, tags = [] } = req.query;
 	if (moodX == 0 && moodY == 0) {
 		Playlist.find({
 			location: {
@@ -167,7 +166,7 @@ function locSearch(req, res, next) {
 				let filtered = playlistsLocation.filter(playlist => {
 					distanceX = playlist.mood.coordinates[0] - moodX;
 					distanceY = playlist.mood.coordinates[1] - moodY;
-					var hasTags = checker(playlist.tags, parsedTags);
+					var hasTags = checker(playlist.tags, tags);
 					return Math.sqrt(distanceX * distanceX + distanceY * distanceY) <= 20 && hasTags;
 				});
 				res.json(filtered);

@@ -134,45 +134,32 @@ function list(req, res, next) {
  */
 function locSearch(req, res, next) {
 	const { longitude, latitude, moodX = 0, moodY = 0, maxDistance = 50000, tags = [] } = req.query;
-	if (moodX == 0 && moodY == 0) {
-		Playlist.find({
-			location: {
-				$near: {
-					$geometry: {
-						type: "Point",
-						coordinates: [longitude, latitude]
-					},
-					$maxDistance: maxDistance
-				}
+	Playlist.find({
+		location: {
+			$near: {
+				$geometry: {
+					type: "Point",
+					coordinates: [longitude, latitude]
+				},
+				$maxDistance: maxDistance
 			}
-		})
-			.then(playlistsLocation => {
-				res.json(playlistsLocation);
-			})
-			.catch(e => next(e));
-	} else {
-		Playlist.find({
-			location: {
-				$near: {
-					$geometry: {
-						type: "Point",
-						coordinates: [longitude, latitude]
-					},
-					$maxDistance: maxDistance
-				}
-			}
-		})
-			.then(playlistsLocation => {
-				let filtered = playlistsLocation.filter(playlist => {
+		}
+	})
+		.populate('user')
+		.then(playlistsLocation => {
+			let filtered = playlistsLocation.filter(playlist => {
+				let distance = 0;
+				if (moodX != 0 || moodY != 0) {
 					distanceX = playlist.mood.coordinates[0] - moodX;
 					distanceY = playlist.mood.coordinates[1] - moodY;
-					var hasTags = checker(playlist.tags, tags);
-					return Math.sqrt(distanceX * distanceX + distanceY * distanceY) <= 20 && hasTags;
-				});
-				res.json(filtered);
-			})
-			.catch(e => next(e));
-	}
+					distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+				}
+				var hasTags = checker(playlist.tags, tags);
+				return distance <= 20 && hasTags;
+			});
+			res.json(filtered);
+		})
+		.catch(e => next(e));
 }
 
 function heart(req, res, next) {
